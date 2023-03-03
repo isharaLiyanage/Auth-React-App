@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import React, { useEffect } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Auth from "./page/Auth";
+import Home from "./page/Home";
 
 function App() {
+  const user = false;
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/google/auth/login/success",
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true,
+            },
+          }
+        );
+        console.log(res.json());
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+    console.log(getUser);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/auth"
+            element={user ? <Navigate to="/" /> : <Auth />}
+          ></Route>
+          <Route index element={<Home />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
