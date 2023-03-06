@@ -1,10 +1,15 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Home() {
   const handelLogOut = async () => {
     axios
-      .get("http://localhost:5000/api/google/auth/logout")
+      .get("http://localhost:5000/api/google/auth/logout", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then(function(response) {
         // handle successful logout
         console.log(response.data);
@@ -18,6 +23,9 @@ function Home() {
     <div>
       WelCome To Home
       <button onClick={handelLogOut}>Log out</button>;
+      <br />
+      <br />
+      <Link to="/auth">Log In</Link>
     </div>
   );
 }
